@@ -14,9 +14,20 @@ all_states = states.state.to_list()
 
 
 
-quest = screen.textinput(title="Quest the state", prompt="What another states name?")
+
 correct = set()
-while True:
+while len(correct) < 50:
+    counter = len(correct)
+    quest = screen.textinput(title=f"{counter}/50 Quest the state",
+                             prompt="What another states name?").title()
+    if quest == "Exit":
+        missing = []
+        for state in all_states:
+            if state not in correct:
+                missing.append(state)
+        new_data = pandas.DataFrame(missing)
+        new_data.to_csv("need_to_learn.csv")
+        break
 
     if quest in all_states:
         t = turtle.Turtle()
@@ -26,19 +37,3 @@ while True:
         t.goto(int(state_data.x), int(state_data.y))
         t.write(quest)
         correct.add(quest)
-
-    counter = len(correct)
-    quest = screen.textinput(title=f"{counter}/50 Quest the state", prompt="What another states name?")
-
-    #turtle.mainloop()
-
-
-
-
-
-
-
-
-
-
-screen.exitonclick()
